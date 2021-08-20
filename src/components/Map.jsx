@@ -18,9 +18,6 @@ export default function Map() {
   const [lat, setLat] = useState(55.953251);
   const [zoom, setZoom] = useState(9);
 
-  let userLat;
-  let userLong;
-
   // const textState = atom({
   //   key: "textState", // unique ID (with respect to other atoms/selectors)
   //   default: "", // default value (aka initial value)
@@ -32,12 +29,54 @@ export default function Map() {
 
   // const [text, setText] = useRecoilState(textState);
 
-  const onChangeLat = (event) => {
-    //setText(event.target.value);
+
+  const onChangeLng = (event) => {
+    if (!map.current) return; // wait for map to initialize
+
+    const v = event.target.value;
+
+    console.log(map.current.getCenter());
+
+    const coord = {
+      lng: v,
+      lat: map.current.getCenter().lng.toFixed(6),
+    };
+
+    map.current.setCenter(coord);
   };
 
-  const onChangeLong = (event) => {
-    //setText(event.target.value);
+  const onChangeLat = (event) => {
+    if (!map.current) return; // wait for map to initialize
+
+    const v = event.target.value;
+
+    console.log(map.current.getCenter());
+
+
+    const coord = {
+      lng: map.current.getCenter().lng.toFixed(6),
+      lat: v,
+    };
+
+    map.current.setCenter( coord );
+  };
+
+  const onZoomOut = () => {
+    if (!map.current) return; // wait for map to initialize
+
+    let z = map.current.getZoom();
+    z = z - 0.1;
+
+    map.current.zoomTo(z);
+  };
+
+  const onZoomIn = () => {
+    if (!map.current) return; // wait for map to initialize
+
+    let z = map.current.getZoom();
+    z = z + 0.1;
+
+    map.current.zoomTo(z);
   };
 
   useEffect(() => {
@@ -63,8 +102,15 @@ export default function Map() {
     <div className="zerospace-map">
       <div className="zerospace-meta">
         Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}
-        <input type="text" value={userLat} onChange={onChangeLat} />
-        <input type="text" value={userLong} onChange={onChangeLong} />
+
+        <label htmlFor="lng">Long:</label>
+        <input id="lng" type="text" value={lng} onChange={onChangeLng} />
+
+        <label htmlFor="lat">Lat:</label>
+        <input id="lat" type="text" value={lat} onChange={onChangeLat} />
+
+        <button onMouseDown={onZoomIn}>+</button>
+        <button onMouseDown={onZoomOut}>-</button>
       </div>
       <div ref={mapContainer} className="zerospace-map__canvas" />
     </div>
