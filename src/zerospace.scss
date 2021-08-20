@@ -1,0 +1,27 @@
+.zerospace {
+
+  background: rgba(0,0,0, 0.1);
+
+  &__layout {
+    display: flex;
+    position: relative;
+  }
+
+}
+
+.zerospace-meta {
+  background-color: rgba(35, 55, 75, 0.9);
+  color: #ffffff;
+  padding: 6px 12px;
+  font-family: monospace;
+  z-index: 1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 12px;
+  border-radius: 4px;
+}
+
+
+@import './components/map';
+@import './components/sidebar';
