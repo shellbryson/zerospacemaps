@@ -86,11 +86,11 @@ export default function Map() {
 
       const _lng = map.current.getCenter().lng.toFixed(6);
       const _lat = map.current.getCenter().lat.toFixed(6);
-      const _zoom = map.current.getZoom().toFixed(2);
+      //const _zoom = map.current.getZoom().toFixed(2);
 
       setLng(_lng);
       setLat(_lat);
-      setZoom(_zoom);
+      //setZoom(_zoom);
 
       // setMapState({
       //   lng: _lng,
