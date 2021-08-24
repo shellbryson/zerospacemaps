@@ -9,8 +9,8 @@ import { mapState } from "../store";
 import { cardsState } from "../store";
 
 export default function Map() {
-  const [lng, setLng] = useState(-3.188267);
   const [lat, setLat] = useState(55.953251);
+  const [lng, setLng] = useState(-3.188267);
   // const [zoom, setZoom] = useState(9);
 
   const [viewport, setViewport] = useState({
@@ -26,8 +26,6 @@ export default function Map() {
   const onMarkerDrag = (e) => {};
 
   const onMarkerDragEnd = (e) => {};
-
-  console.log(cards);
 
   const markers = cards.map( (card) => (
     <Marker
