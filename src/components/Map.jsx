@@ -3,19 +3,15 @@ import { useRecoilState } from "recoil";
 
 import MapGL, { Layer, Marker } from "react-map-gl";
 
-// import mapboxgl from "!mapbox-gl"; // eslint-disable-line import/no-webpack-loader-syntax
-import { mapState } from "../store";
+import Sidebar from "./Sidebar";
 
-// mapboxgl.accessToken =
-//   "pk.eyJ1Ijoic2hlbGxicnlzb24iLCJhIjoiY2tzajQ5NXVyMGdhdzJwbmNnYXJuNHJoeiJ9.uXFj0pmv3_9F1hebVu8CWA";
+import { mapState } from "../store";
+import { cardsState } from "../store";
 
 export default function Map() {
-  // const mapContainer = useRef(null);
-  // const map = useRef(null);
   const [lng, setLng] = useState(-3.188267);
   const [lat, setLat] = useState(55.953251);
   // const [zoom, setZoom] = useState(9);
-
 
   const [viewport, setViewport] = useState({
     latitude: 55.953251,
@@ -23,48 +19,32 @@ export default function Map() {
     zoom: 8,
   });
 
-  const pins = [
-    {
-      id: 1,
-      label: "test1",
-      longitude: -3.188267,
-      latitude: 55.953251,
-    },
-  ];
+  const [cards] = useRecoilState(cardsState);
 
+  const onMarkerDragStart = (e) => {};
 
-  const onMarkerDragStart = e => {
+  const onMarkerDrag = (e) => {};
 
-  }
+  const onMarkerDragEnd = (e) => {};
 
-  const onMarkerDrag = (e) => {
+  console.log(cards);
 
-  };
-
-
-  const onMarkerDragEnd = e => {
-
-  }
-
-  const markers = React.useMemo(() =>
-    pins.map((pin) => (
-      <Marker
-        key={pin.id}
-        longitude={pin.longitude}
-        latitude={pin.latitude}
-        draggable
-        onDragStart={onMarkerDragStart}
-        onDrag={onMarkerDrag}
-        onDragEnd={onMarkerDragEnd}
-      >
-        <img
-          src="./logo192.png"
-          alt={`Longitude=${pin.longitude} Latitude=${pin.latitude}`}
-        />
-      </Marker>
-    ))
-  );
-
+  const markers = cards.map( (card) => (
+    <Marker
+      key={card.id}
+      longitude={card.coords.lng}
+      latitude={card.coords.lat}
+      draggable
+      onDragStart={onMarkerDragStart}
+      onDrag={onMarkerDrag}
+      onDragEnd={onMarkerDragEnd}
+    >
+      <img
+        src="./logo192.png"
+        alt={`Longitude=${card.coords.lng} Latitude=${card.coords.lat}`}
+      />
+    </Marker>
+  ));
 
   const [currentMapState, setMapState] = useRecoilState(mapState);
 
@@ -82,8 +62,11 @@ export default function Map() {
       zoom: viewport.zoom,
     });
 
-    setViewport({ ...viewport, longitude: parseFloat(lng), latitude: parseFloat(lat) });
-
+    setViewport({
+      ...viewport,
+      longitude: parseFloat(lng),
+      latitude: parseFloat(lat),
+    });
   };
 
   const onChangeLng = (e) => {
@@ -155,6 +138,33 @@ export default function Map() {
   //   });
   // });
 
+
+  const onMouseClick = (e) => {
+    console.log(e);
+  };
+
+  //   map.current.on("move", () => {
+
+  //     const _lng = map.current.getCenter().lng.toFixed(6);
+  //     const _lat = map.current.getCenter().lat.toFixed(6);
+  //     //const _zoom = map.current.getZoom().toFixed(2);
+
+  //     setLng(_lng);
+  //     setLat(_lat);
+  //     //setZoom(_zoom);
+
+  //     // setMapState({
+  //     //   lng: _lng,
+  //     //   lat: _lat,
+  //     //   zoom: _zoom,
+  //     // });
+
+  //   });
+
+  const onAddNewPin = e => {
+
+  }
+
   return (
     <div className="zerospace-map">
       <div className="zerospace-meta">
@@ -175,10 +185,12 @@ export default function Map() {
         height="100%"
         mapStyle="mapbox://styles/mapbox/dark-v9"
         onViewportChange={setViewport}
+        onClick={onMouseClick}
         mapboxApiAccessToken="pk.eyJ1Ijoic2hlbGxicnlzb24iLCJhIjoiY2tzajQ5NXVyMGdhdzJwbmNnYXJuNHJoeiJ9.uXFj0pmv3_9F1hebVu8CWA"
       >
         {markers}
       </MapGL>
+      <Sidebar onAddNewPin={onAddNewPin} />
     </div>
   );
 }
