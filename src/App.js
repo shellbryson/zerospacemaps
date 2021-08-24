@@ -6,8 +6,8 @@ function App() {
 
   return (
     <div className="zerospace">
-      <header className="zerospace__header">Zero Space</header>
       <main className="zerospace__layout">
+        <header className="zerospace__header">Zero Space</header>
         <Map />
         <Sidebar />
       </main>

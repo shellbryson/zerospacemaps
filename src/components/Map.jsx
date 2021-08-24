@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 
-import ReactMapGL from "react-map-gl";
+import MapGL, { Layer, Marker } from "react-map-gl";
 
 // import mapboxgl from "!mapbox-gl"; // eslint-disable-line import/no-webpack-loader-syntax
 import { mapState } from "../store";
@@ -18,12 +18,52 @@ export default function Map() {
 
 
   const [viewport, setViewport] = useState({
-    width: "100%",
-    height: "100%",
     latitude: 55.953251,
     longitude: -3.188267,
     zoom: 8,
   });
+
+  const pins = [
+    {
+      id: 1,
+      label: "test1",
+      longitude: -3.188267,
+      latitude: 55.953251,
+    },
+  ];
+
+
+  const onMarkerDragStart = e => {
+
+  }
+
+  const onMarkerDrag = (e) => {
+
+  };
+
+
+  const onMarkerDragEnd = e => {
+
+  }
+
+  const markers = React.useMemo(() =>
+    pins.map((pin) => (
+      <Marker
+        key={pin.id}
+        longitude={pin.longitude}
+        latitude={pin.latitude}
+        draggable
+        onDragStart={onMarkerDragStart}
+        onDrag={onMarkerDrag}
+        onDragEnd={onMarkerDragEnd}
+      >
+        <img
+          src="./logo192.png"
+          alt={`Longitude=${pin.longitude} Latitude=${pin.latitude}`}
+        />
+      </Marker>
+    ))
+  );
 
 
   const [currentMapState, setMapState] = useRecoilState(mapState);
@@ -129,11 +169,16 @@ export default function Map() {
       </div>
       {/* <div ref={mapContainer} className="zerospace-map__canvas" /> */}
 
-      <ReactMapGL
+      <MapGL
         {...viewport}
+        width="100%"
+        height="100%"
+        mapStyle="mapbox://styles/mapbox/dark-v9"
+        onViewportChange={setViewport}
         mapboxApiAccessToken="pk.eyJ1Ijoic2hlbGxicnlzb24iLCJhIjoiY2tzajQ5NXVyMGdhdzJwbmNnYXJuNHJoeiJ9.uXFj0pmv3_9F1hebVu8CWA"
-        onViewportChange={(nextViewport) => setViewport(nextViewport)}
-      />
+      >
+        {markers}
+      </MapGL>
     </div>
   );
 }

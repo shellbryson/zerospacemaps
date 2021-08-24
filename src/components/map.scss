@@ -1,9 +1,4 @@
 .zerospace-map {
   height: 100vh;
-  width: calc(100vw - 20%);
-
-  &__canvas {
-    width: 100%;
-    height: 100%;
-  }
+  width: 100vw;
 }
